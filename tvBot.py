@@ -82,6 +82,7 @@ def ora(update, context):
     # recupero la data della richiesta nel formato YYYY-MM-DD
     request_date = get_date_time(datetime.strftime(update_message_date, "%Y-%m-%d %H:%M:%S"))[0]
 
+    print(request_date)
     # richiesta API
     req =  requests.get("https://tvzap.kataweb.it/ws/epg_channels_days.php?date=" + request_date + "&offset=0&limit=1000&filter=")
     response = json.loads(req.content)
