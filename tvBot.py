@@ -107,9 +107,9 @@ def ora(update, context):
                 if channel['channelName'] == "Canale 5":
                     print(program_response)
                 context.bot.send_message(chat_id=update.message.chat_id, text=str(
-                    get_date_time(datetime.strftime(datetime.utcfromtimestamp(program_response['details']['startTime']), "%Y-%m-%d %H:%M"))[1]
+                    get_date_time(datetime.strftime(datetime.fromtimestamp(program_response['details']['startTime']), "%Y-%m-%d %H:%M"))[1]
                     ) + "-" + get_date_time(
-                    datetime.strftime(datetime.utcfromtimestamp(program_response['details']['endTime']), "%Y-%m-%d %H:%M"))[1] + " " + str(
+                    datetime.strftime(datetime.fromtimestamp(program_response['details']['endTime']), "%Y-%m-%d %H:%M"))[1] + " " + str(
                     program_response['channel']) + " " + str(program_response['details']['title']))
 
             else:
