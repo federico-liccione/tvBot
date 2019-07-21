@@ -69,12 +69,12 @@ def get_actual_program(response, request_time):
 
 def ora(update, context):
     # inizio programmi ore 6:00
-    START_TIME_PROGRAMS = "1563084000"
+    START_TIME_PROGRAMS = "06:00:00"
 
     #print("Update: ")
     #print(update)
     # recupero l'ora della richiesta nel formato hh:mm:ss
-    request_time = get_date_time(datetime.strftime(update.message.date, "%Y-%m-%d %H:%M:%S"))[1]
+    request_time = get_date_time(datetime.strftime(datetime.fromtimestamp(time.time()), "%Y-%m-%d %H:%M:%S"))[1]
     print("update.message.date" + str(update.message.date))
     print("requestTime: " + request_time)
     # calcolo il giorno per l'API in base all'orario: dalle 0:00 alle 5:59 la programmazione appartiene ancora al giorno precedente
