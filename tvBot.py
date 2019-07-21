@@ -93,17 +93,18 @@ def ora(update, context):
     for channel in channels:
         for program in channel['programs']:
             print("ChannelName!!!:" + str(channel['channelName']))
-            if channel['channelName'] == "Canale 5":
-               print("primo: " + str(int(datetime.timestamp(update.message.date))))
-               print("secondo(time)" + str(calendar.timegm(time.localtime())))
-               print("request_time: ")
-               print(str(int(datetime.timestamp(update.message.date))))
-               print("startTime: " + str(program['startTime']))
-               print("endTime: " + str(program['endTime']))
-               #print(str(int(datetime.timestamp(update.message.date))))
+            #if channel['channelName'] == "Canale 5":
+                # print("primo: " + str(int(datetime.timestamp(update.message.date))))
+                # print("secondo(time)" + str(calendar.timegm(time.localtime())))
+                # print("request_time: ")
+                # print(str(int(datetime.timestamp(update.message.date))))
+                # print("startTime: " + str(program['startTime']))
+                # print("endTime: " + str(program['endTime']))
+                #print(str(int(datetime.timestamp(update.message.date))))
             if str(calendar.timegm(time.localtime())) >= str(program['startTime']) and str(calendar.timegm(time.localtime())) <= str(program['endTime']):
                 program_response['channel'] = channel['channelName']
                 program_response['details'] = program
+                print("dentro")
                 if channel['channelName'] == "Canale 5":
                     print(program_response)
                 context.bot.send_message(chat_id=update.message.chat_id, text=str(
