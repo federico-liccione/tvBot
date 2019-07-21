@@ -106,7 +106,7 @@ def ora(update, context):
             # print("timestamp attuale: " + str(calendar.timegm(time.localtime())))
             # print("start: " + str(program['startTime']))
             # print("end: " + str(program['endTime']))
-            if str(calendar.timegm(time.localtime())) >= str(program['startTime']) and str(calendar.timegm(time.localtime())) <= str(program['endTime']):
+            if str(int(time.time())) >= str(program['startTime']) and str(int(time.time())) <= str(program['endTime']):
                 program_response['channel'] = channel['channelName']
                 program_response['details'] = program
                 #print("dentro")
