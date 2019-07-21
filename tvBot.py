@@ -104,7 +104,7 @@ def ora(update, context):
             if str(calendar.timegm(time.localtime())) >= str(program['startTime']) and str(calendar.timegm(time.localtime())) <= str(program['endTime']):
                 program_response['channel'] = channel['channelName']
                 program_response['details'] = program
-                print("dentro")
+                #print("dentro")
                 if channel['channelName'] == "Canale 5":
                     print(program_response)
                 context.bot.send_message(chat_id=update.message.chat_id, text=str(
