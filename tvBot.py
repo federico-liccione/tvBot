@@ -75,7 +75,7 @@ def ora(update, context):
     #print(update)
     # recupero l'ora della richiesta nel formato hh:mm:ss
     request_time = get_date_time(datetime.strftime(update.message.date, "%Y-%m-%d %H:%M:%S"))[1]
-
+    print("update.message.date" + str(update.message.date))
     print("requestTime: " + request_time)
     # calcolo il giorno per l'API in base all'orario: dalle 0:00 alle 5:59 la programmazione appartiene ancora al giorno precedente
     update_message_date = update.message.date if request_time >= START_TIME_PROGRAMS else update.message.date - timedelta(days=1)
