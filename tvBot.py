@@ -23,6 +23,7 @@ class style:
 
 
 def get_date_time(datetime_input):
+    print("dentro function: " + str(datetime_input))
     time_date_list = datetime_input.split(" ")
     return time_date_list
 
