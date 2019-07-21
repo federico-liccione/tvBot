@@ -1,1 +1,1 @@
-web: python tvBot.py	
+worker: python tvBot.py	
