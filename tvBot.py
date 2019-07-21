@@ -92,7 +92,7 @@ def ora(update, context):
     # print("channels: " + str(channels))
     for channel in channels:
         for program in channel['programs']:
-            print("ChannelName!!!:" + str(channel['channelName']))
+            #print("ChannelName!!!:" + str(channel['channelName']))
             #if channel['channelName'] == "Canale 5":
                 # print("primo: " + str(int(datetime.timestamp(update.message.date))))
                 # print("secondo(time)" + str(calendar.timegm(time.localtime())))
