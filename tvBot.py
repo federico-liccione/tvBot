@@ -16,7 +16,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 # COSTANTI
 # inizio programmi ore 6:00
 START_TIME_PROGRAMS = "06:00:00"
-
+MAX_MESSAGE_LENGTH = 4096;
 
 class style:
    BOLD = '\033[1m'
@@ -28,6 +28,32 @@ class style:
 def get_date_time(datetime_input):
     time_date_list = datetime_input.split(" ")
     return time_date_list
+
+# funzione per dividere i messaggi in parti di 4096 (limite di telegram)
+def send_message(bot, chat_id, text: str, **kwargs):
+    if len(text) <= MAX_MESSAGE_LENGTH:
+        return bot.send_message(chat_id, text, **kwargs)
+
+    parts = []
+    while len(text) > 0:
+        if len(text) > MAX_MESSAGE_LENGTH:
+            part = text[:MAX_MESSAGE_LENGTH]
+            first_lnbr = part.rfind('\n')
+            if first_lnbr != -1:
+                parts.append(part[:first_lnbr])
+                text = text[first_lnbr:]
+            else:
+                parts.append(part)
+                text = text[MAX_MESSAGE_LENGTH:]
+        else:
+            parts.append(text)
+            break
+
+    msg = None
+    for part in parts:
+        msg = bot.send_message(chat_id, part, **kwargs)
+        time.sleep(1)
+    return msg  # return only the last message
 
 
 # print (today)
@@ -90,6 +116,7 @@ def ora(update, context):
 
     #program_response = get_actual_program(response, int(datetime.timestamp(update.message.date)))
     program_response = {}
+    response = ""
     channels = response['payload']['channels']
     # print("channels: " + str(channels))
     for channel in channels:
@@ -115,14 +142,21 @@ def ora(update, context):
                     print("startTime: " + str(program['startTime']))
                     print("endTime: " + str(program['endTime']))
                     print(program_response)
-                context.bot.send_message(chat_id=update.message.chat_id, text=str(
+                response += str(
                     get_date_time(datetime.strftime(datetime.fromtimestamp(program_response['details']['startTime']), "%Y-%m-%d %H:%M"))[1]
                     ) + "-" + get_date_time(
                     datetime.strftime(datetime.fromtimestamp(program_response['details']['endTime']), "%Y-%m-%d %H:%M"))[1] + " " + "*" + str(
-                    program_response['channel']) + "*" + " " + str(program_response['details']['title']), parse_mode=telegram.ParseMode.MARKDOWN)
+                    program_response['channel']) + "*" + " " + str(program_response['details']['title']) + "\n"
+
+                # context.bot.send_message(chat_id=update.message.chat_id, text=str(
+                #     get_date_time(datetime.strftime(datetime.fromtimestamp(program_response['details']['startTime']), "%Y-%m-%d %H:%M"))[1]
+                #     ) + "-" + get_date_time(
+                #     datetime.strftime(datetime.fromtimestamp(program_response['details']['endTime']), "%Y-%m-%d %H:%M"))[1] + " " + "*" + str(
+                #     program_response['channel']) + "*" + " " + str(program_response['details']['title']), parse_mode=telegram.ParseMode.MARKDOWN)
 
             else:
                 continue
+            send_message(context.bot, update.message.chat_id, response, parse_mode=telegram.ParseMode.MARKDOWN)
 
     #print(program_response)
     #context.bot.send_message(chat_id=update.message.chat_id, text=str(get_date_time(datetime.strftime(program_response['details']['startTime'], "%Y-%m-%d %H:%M:%S"))[1]
