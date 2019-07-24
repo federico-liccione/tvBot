@@ -156,7 +156,7 @@ def ora(update, context):
 
             else:
                 continue
-            send_message(context.bot, update.message.chat_id, text_response, parse_mode=telegram.ParseMode.MARKDOWN)
+        send_message(context.bot, update.message.chat_id, text_response, parse_mode=telegram.ParseMode.MARKDOWN)
 
     #print(program_response)
     #context.bot.send_message(chat_id=update.message.chat_id, text=str(get_date_time(datetime.strftime(program_response['details']['startTime'], "%Y-%m-%d %H:%M:%S"))[1]
