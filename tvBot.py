@@ -41,7 +41,7 @@ def send_message(bot, chat_id, text: str, **kwargs):
             first_lnbr = part.rfind('\n')
             if first_lnbr != -1:
                 parts.append(part[:first_lnbr])
-                text = text[first_lnbr:]
+                text = text[first_lnbr + 1:]
             else:
                 parts.append(part)
                 text = text[MAX_MESSAGE_LENGTH:]
@@ -146,7 +146,7 @@ def ora(update, context):
                     get_date_time(datetime.strftime(datetime.fromtimestamp(program_response['details']['startTime']), "%Y-%m-%d %H:%M"))[1]
                     ) + "-" + get_date_time(
                     datetime.strftime(datetime.fromtimestamp(program_response['details']['endTime']), "%Y-%m-%d %H:%M"))[1] + " " + "*" + str(
-                    program_response['channel']) + "*" + " " + str(program_response['details']['title']) + "\n"
+                    program_response['channel']) + "*" + "\t" + str(program_response['details']['title']) + "\n"
 
                 # context.bot.send_message(chat_id=update.message.chat_id, text=str(
                 #     get_date_time(datetime.strftime(datetime.fromtimestamp(program_response['details']['startTime']), "%Y-%m-%d %H:%M"))[1]
