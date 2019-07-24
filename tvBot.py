@@ -13,6 +13,9 @@ import ssl
 #logger
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
+# COSTANTI
+# inizio programmi ore 6:00
+START_TIME_PROGRAMS = "06:00:00"
 
 
 class style:
@@ -68,9 +71,6 @@ def get_actual_program(response, request_time):
                 continue
 
 def ora(update, context):
-    # inizio programmi ore 6:00
-    START_TIME_PROGRAMS = "06:00:00"
-
     #print("Update: ")
     #print(update)
     # recupero l'ora della richiesta nel formato hh:mm:ss
@@ -118,8 +118,8 @@ def ora(update, context):
                 context.bot.send_message(chat_id=update.message.chat_id, text=str(
                     get_date_time(datetime.strftime(datetime.fromtimestamp(program_response['details']['startTime']), "%Y-%m-%d %H:%M"))[1]
                     ) + "-" + get_date_time(
-                    datetime.strftime(datetime.fromtimestamp(program_response['details']['endTime']), "%Y-%m-%d %H:%M"))[1] + " " + str(
-                    program_response['channel']) + " " + str(program_response['details']['title']))
+                    datetime.strftime(datetime.fromtimestamp(program_response['details']['endTime']), "%Y-%m-%d %H:%M"))[1] + " " + "*" + str(
+                    program_response['channel']) + "*" + " " + str(program_response['details']['title']), parse_mode=telegram.ParseMode.MARKDOWN)
 
             else:
                 continue
