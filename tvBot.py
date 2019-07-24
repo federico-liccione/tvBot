@@ -116,7 +116,7 @@ def ora(update, context):
 
     #program_response = get_actual_program(response, int(datetime.timestamp(update.message.date)))
     program_response = {}
-    response = ""
+    text_response = ""
     channels = response['payload']['channels']
     # print("channels: " + str(channels))
     for channel in channels:
@@ -142,7 +142,7 @@ def ora(update, context):
                     print("startTime: " + str(program['startTime']))
                     print("endTime: " + str(program['endTime']))
                     print(program_response)
-                response += str(
+                text_response += str(
                     get_date_time(datetime.strftime(datetime.fromtimestamp(program_response['details']['startTime']), "%Y-%m-%d %H:%M"))[1]
                     ) + "-" + get_date_time(
                     datetime.strftime(datetime.fromtimestamp(program_response['details']['endTime']), "%Y-%m-%d %H:%M"))[1] + " " + "*" + str(
@@ -156,7 +156,7 @@ def ora(update, context):
 
             else:
                 continue
-            send_message(context.bot, update.message.chat_id, response, parse_mode=telegram.ParseMode.MARKDOWN)
+            send_message(context.bot, update.message.chat_id, text_response, parse_mode=telegram.ParseMode.MARKDOWN)
 
     #print(program_response)
     #context.bot.send_message(chat_id=update.message.chat_id, text=str(get_date_time(datetime.strftime(program_response['details']['startTime'], "%Y-%m-%d %H:%M:%S"))[1]
