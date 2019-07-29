@@ -200,6 +200,7 @@ def dopo(update, context):
                     datetime.strftime(datetime.fromtimestamp(program_response['details']['endTime']),
                                       "%Y-%m-%d %H:%M"))[1] + " " + "*" + str(
                     program_response['channel']) + "*" + "\t" + str(program_response['details']['title']) + "\n\n"
+                break
             else:
                 continue
     send_message(context.bot, update.message.chat_id, text_response, parse_mode=telegram.ParseMode.MARKDOWN)
