@@ -188,7 +188,7 @@ def dopo(update, context):
                     int(datetime.timestamp(datetime.now() + timedelta(hours=2)))) <= str(program['endTime']):
                 stop_flag = True
                 continue
-            if stop_flag == True:
+            if stop_flag is True:
                 program_response['channel'] = channel['channelName']
                 program_response['details'] = program
                 text_response += str(
@@ -201,7 +201,7 @@ def dopo(update, context):
             else:
                 continue
     send_message(context.bot, update.message.chat_id, text_response, parse_mode=telegram.ParseMode.MARKDOWN)
-
+    print(text_response)
 updater.dispatcher.add_handler(CommandHandler('dopo', dopo))
 
 updater.start_polling()
