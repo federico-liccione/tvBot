@@ -18,16 +18,12 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 START_TIME_PROGRAMS = "06:00:00"
 MAX_MESSAGE_LENGTH = 4096;
 
-class style:
-   BOLD = '\033[1m'
-   END = '\033[0m'
 
 # recupero data e orario corrente: restituisce una lista con data come primo elemento e ora come secondo elemento
-
-
 def get_date_time(datetime_input):
     time_date_list = datetime_input.split(" ")
     return time_date_list
+
 
 # funzione per dividere i messaggi in parti di 4096 (limite di telegram)
 def send_message(bot, chat_id, text: str, **kwargs):
@@ -56,7 +52,7 @@ def send_message(bot, chat_id, text: str, **kwargs):
     return msg  # return only the last message
 
 
-# print (today)
+
 # esempio di saluto
 def hello(update, context):
     print()
@@ -75,6 +71,7 @@ def start(update, context):
     context.bot.send_message(chat_id=update.message.chat_id, text="I'm a bot, please talk to me!")
 start_handler = CommandHandler('start', start)
 updater.dispatcher.add_handler(start_handler)
+
 
 # comando /ora
 def get_actual_program(response, request_time):
@@ -165,6 +162,43 @@ def ora(update, context):
 
 updater.dispatcher.add_handler(CommandHandler('ora', ora))
 
+def dopo(update, context):
+    request_time = get_date_time(datetime.strftime(datetime.fromtimestamp(time.time()), "%Y-%m-%d %H:%M:%S"))[1]
+
+    # calcolo il giorno per l'API in base all'orario: dalle 0:00 alle 5:59 la programmazione appartiene ancora al giorno precedente
+    update_message_date = update.message.date if request_time >= START_TIME_PROGRAMS else update.message.date - timedelta(
+        days=1)
+
+    # recupero la data della richiesta nel formato YYYY-MM-DD
+    request_date = get_date_time(datetime.strftime(update_message_date, "%Y-%m-%d %H:%M:%S"))[0]
+
+    # richiesta API
+    req = requests.get(
+        "https://tvzap.kataweb.it/ws/epg_channels_days.php?date=" + request_date + "&offset=0&limit=1000&filter=")
+    response = json.loads(req.content)
+
+    program_response = {}
+    text_response = ""
+    channels = response['payload']['channels']
+
+    for channel in channels:
+        for program in channel['programs']:
+            if str(int(datetime.timestamp(datetime.now() + timedelta(hours=2)))) >= str(program['endTime']):
+                program_response['channel'] = channel['channelName']
+                program_response['details'] = program
+                text_response += str(
+                    get_date_time(datetime.strftime(datetime.fromtimestamp(program_response['details']['startTime']),
+                                                    "%Y-%m-%d %H:%M"))[1]
+                ) + "-" + get_date_time(
+                    datetime.strftime(datetime.fromtimestamp(program_response['details']['endTime']),
+                                      "%Y-%m-%d %H:%M"))[1] + " " + "*" + str(
+                    program_response['channel']) + "*" + "\t" + str(program_response['details']['title']) + "\n\n"
+                break
+            else:
+                continue
+    send_message(context.bot, update.message.chat_id, text_response, parse_mode=telegram.ParseMode.MARKDOWN)
+
+updater.dispatcher.add_handler(CommandHandler('dopo', dopo))
 
 updater.start_polling()
 updater.idle()
