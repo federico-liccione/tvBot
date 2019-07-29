@@ -189,6 +189,7 @@ def dopo(update, context):
                 stop_flag = True
                 continue
             if stop_flag is True:
+                print("dentro flag = true")
                 program_response['channel'] = channel['channelName']
                 program_response['details'] = program
                 text_response += str(
