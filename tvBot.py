@@ -182,8 +182,13 @@ def dopo(update, context):
     channels = response['payload']['channels']
 
     for channel in channels:
+        stop_flag = False
         for program in channel['programs']:
-            if str(int(datetime.timestamp(datetime.now() + timedelta(hours=2)))) >= str(program['endTime']):
+            if str(int(datetime.timestamp(datetime.now() + timedelta(hours=2)))) >= str(program['endTime']) and str(
+                    int(datetime.timestamp(datetime.now() + timedelta(hours=2)))) <= str(program['endTime']):
+                stop_flag = True
+                continue
+            if stop_flag == True:
                 program_response['channel'] = channel['channelName']
                 program_response['details'] = program
                 text_response += str(
@@ -193,7 +198,6 @@ def dopo(update, context):
                     datetime.strftime(datetime.fromtimestamp(program_response['details']['endTime']),
                                       "%Y-%m-%d %H:%M"))[1] + " " + "*" + str(
                     program_response['channel']) + "*" + "\t" + str(program_response['details']['title']) + "\n\n"
-                break
             else:
                 continue
     send_message(context.bot, update.message.chat_id, text_response, parse_mode=telegram.ParseMode.MARKDOWN)
