@@ -184,6 +184,7 @@ def dopo(update, context):
     for channel in channels:
         stop_flag = False
         for program in channel['programs']:
+            print(stop_flag)
             if str(int(datetime.timestamp(datetime.now() + timedelta(hours=2)))) >= str(program['endTime']) and str(
                     int(datetime.timestamp(datetime.now() + timedelta(hours=2)))) <= str(program['endTime']):
                 stop_flag = True
