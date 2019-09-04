@@ -86,7 +86,7 @@ def get_actual_program(response, request_time):
                 continue
 
 def ora(update, context):
-    print(update.message.chat.first_name + " " + update.message.chat.last_name + " ha richiesto /ora")
+    print(str(update.message.chat.first_name) + " " + str(update.message.chat.last_name) + " ha richiesto /ora")
     # recupero l'ora della richiesta nel formato hh:mm:ss
     request_time = get_date_time(datetime.strftime(datetime.fromtimestamp(time.time()), "%Y-%m-%d %H:%M:%S"))[1]
     # calcolo il giorno per l'API in base all'orario: dalle 0:00 alle 5:59 la programmazione appartiene ancora al giorno precedente
@@ -122,7 +122,7 @@ def ora(update, context):
 updater.dispatcher.add_handler(CommandHandler('ora', ora))
 
 def dopo(update, context):
-    print(update.message.chat.first_name + " " + update.message.chat.last_name + " ha richiesto /dopo")
+    print(str(update.message.chat.first_name) + " " + str(update.message.chat.last_name) + " ha richiesto /dopo")
     request_time = get_date_time(datetime.strftime(datetime.fromtimestamp(time.time()), "%Y-%m-%d %H:%M:%S"))[1]
 
     # calcolo il giorno per l'API in base all'orario: dalle 0:00 alle 5:59 la programmazione appartiene ancora al giorno precedente
