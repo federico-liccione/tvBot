@@ -6,6 +6,7 @@ cryptography==2.7
 DateTime==4.3
 future==0.17.1
 idna==2.8
+numpy==1.17
 pycparser==2.19
 python-telegram-bot==12.0.0b1
 pytz==2019.1
