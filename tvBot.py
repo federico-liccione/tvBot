@@ -189,7 +189,7 @@ def create_keyboard():
         range(2,8): 3
     })
     def switch_action(time, row_index):
-        print ("time: " + time + ", row_index: " + row_index)
+        print ("time: " + str(time) + ", row_index: " + str(row_index))
         keyboard[row_index].append(InlineKeyboardButton(time + ": 00", callback_data=time))
     for x in range(24):
         row = switch[x]
