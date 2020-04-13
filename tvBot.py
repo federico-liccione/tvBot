@@ -26,7 +26,7 @@ class Switch(dict):
 # inizio programmi ore 6:00
 START_TIME_PROGRAMS = "06:00:00"
 MAX_MESSAGE_LENGTH = 4096
-INLINE_KEYBOARD_ROWS = 4
+INLINE_KEYBOARD_ROWS = 6
 
 
 # recupero data e orario corrente: restituisce una lista con data come primo elemento e ora come secondo elemento
@@ -182,15 +182,16 @@ def create_keyboard():
     keyboard = [ []  for i in range(INLINE_KEYBOARD_ROWS) ]
     print(keyboard)
     switch = Switch({
-        range(8,14): 0,
-        range(14,20): 1,
-        range(20,24): 2,
-        range(0,2): 2,
-        range(2,8): 3
+        range(8,12): 0,
+        range(12,16): 1,
+        range(16,20): 2,
+        range(20, 24): 3,
+        range(0,4): 4,
+        range(4,8): 5
     })
     def switch_action(time, row_index):
         print ("time: " + str(time) + ", row_index: " + str(row_index))
-        keyboard[row_index].append(InlineKeyboardButton(str(time) + ": 00", callback_data=time))
+        keyboard[row_index].append(InlineKeyboardButton(str(time) + ":00", callback_data=time))
     for x in range(24):
         row = switch[x]
         switch_action(x, row)
@@ -201,7 +202,7 @@ def orari(update, context):
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    update.message.reply_text('Please choose:', reply_markup=reply_markup)
+    update.message.reply_text('Seleziona un orario:', reply_markup=reply_markup)
 updater.dispatcher.add_handler(CommandHandler('orari', orari))
 
 updater.start_polling()
