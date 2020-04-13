@@ -7,12 +7,20 @@ import time
 from datetime import datetime, timedelta
 import json
 import logging
+import numpy as np
 import ssl
 
 
 #logger
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
+# Classe di supporto per gli switch
+class Switch(dict):
+    def __getitem__(self, item):
+        for key in self.keys():                   # iterate over the intervals
+            if item in key:                       # if the argument is part of that interval
+                return super(Switch, self).__getitem__(key)   # return its associated value
+        raise KeyError(item)                      # if not in any interval, raise KeyError
 # COSTANTI
 # inizio programmi ore 6:00
 START_TIME_PROGRAMS = "06:00:00"
@@ -121,6 +129,7 @@ def ora(update, context):
 
 updater.dispatcher.add_handler(CommandHandler('ora', ora))
 
+# comando /dopo
 def dopo(update, context):
     print(str(update.message.chat.first_name) + " " + str(update.message.chat.last_name) + " ha richiesto /dopo")
     request_time = get_date_time(datetime.strftime(datetime.fromtimestamp(time.time()), "%Y-%m-%d %H:%M:%S"))[1]
@@ -163,6 +172,31 @@ def dopo(update, context):
                 continue
     send_message(context.bot, update.message.chat_id, text_response, parse_mode=telegram.ParseMode.MARKDOWN)
 updater.dispatcher.add_handler(CommandHandler('dopo', dopo))
+
+# comando /orari
+# crea la tastiera inline per scegliere l'orario
+def create_keyboard():
+    keyboard = np.full_like((4, 6), None, dtype=object)
+    switch = Switch({
+        range(8,14): 0,
+        range(14,20): 1,
+        range(20,2): 2,
+        range(2,8): 3
+    })
+    def switch_action(time, row):
+        keyboard[row].append(InlineKeyboardButton(time + ": 00", callback_data=time))
+    for x in range(24):
+        row = switch(x);
+        switch_action(x, row)
+    return keyboard
+
+def orari(update, context):
+    keyboard = create_keyboard()
+
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    update.message.reply_text('Please choose:', reply_markup=reply_markup)
+updater.dispatcher.add_handler(CommandHandler('orari', orari))
 
 updater.start_polling()
 updater.idle()
