@@ -24,7 +24,9 @@ class Switch(dict):
 # COSTANTI
 # inizio programmi ore 6:00
 START_TIME_PROGRAMS = "06:00:00"
-MAX_MESSAGE_LENGTH = 4096;
+MAX_MESSAGE_LENGTH = 4096
+INLINE_KEYBOARD_ROWS = 4
+INLINE_KEYBOARD_COLUMNS = 6
 
 
 # recupero data e orario corrente: restituisce una lista con data come primo elemento e ora come secondo elemento
@@ -177,7 +179,7 @@ updater.dispatcher.add_handler(CommandHandler('dopo', dopo))
 # crea la tastiera inline per scegliere l'orario
 def create_keyboard():
     print("Start create keyboard")
-    keyboard = np.full_like((4, 6), None, dtype=object)
+    keyboard = [ [0] * INLINE_KEYBOARD_COLUMNS for i in range(INLINE_KEYBOARD_ROWS) ]
     print(keyboard)
     switch = Switch({
         range(8,14): 0,
