@@ -176,7 +176,9 @@ updater.dispatcher.add_handler(CommandHandler('dopo', dopo))
 # comando /orari
 # crea la tastiera inline per scegliere l'orario
 def create_keyboard():
+    print("Start create keyboard")
     keyboard = np.full_like((4, 6), None, dtype=object)
+    print(keyboard)
     switch = Switch({
         range(8,14): 0,
         range(14,20): 1,
@@ -184,10 +186,11 @@ def create_keyboard():
         range(0,2): 2,
         range(2,8): 3
     })
-    def switch_action(time, row):
-        keyboard[row].append(InlineKeyboardButton(time + ": 00", callback_data=time))
+    def switch_action(time, row_index):
+        print ("time: " + time + ", row_index: " + row_index)
+        keyboard[row_index].append(InlineKeyboardButton(time + ": 00", callback_data=time))
     for x in range(24):
-        row = switch[x];
+        row = switch[x]
         switch_action(x, row)
     return keyboard
 
