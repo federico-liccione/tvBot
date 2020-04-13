@@ -180,7 +180,8 @@ def create_keyboard():
     switch = Switch({
         range(8,14): 0,
         range(14,20): 1,
-        range(20,2): 2,
+        range(20,24): 2,
+        range(0,2): 2,
         range(2,8): 3
     })
     def switch_action(time, row):
