@@ -186,7 +186,7 @@ def create_keyboard():
     def switch_action(time, row):
         keyboard[row].append(InlineKeyboardButton(time + ": 00", callback_data=time))
     for x in range(24):
-        row = switch(x);
+        row = switch[x];
         switch_action(x, row)
     return keyboard
 
