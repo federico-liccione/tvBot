@@ -98,7 +98,12 @@ def get_actual_program(response, request_time):
 def ora(update, context):
     print(str(update.message.chat.first_name) + " " + str(update.message.chat.last_name) + " " + "ha richiesto /ora")
     # recupero l'ora della richiesta nel formato hh:mm:ss
-    request_time = get_date_time(datetime.strftime(datetime.fromtimestamp(time.time()), "%Y-%m-%d %H:%M:%S"))[1]
+    input_keyboard_time = context.args[0];
+    if input_keyboard_time :
+        request_time = input_keyboard_time + ":00:00";
+    else :
+        request_time = get_date_time(datetime.strftime(datetime.fromtimestamp(time.time()), "%Y-%m-%d %H:%M:%S"))[1]
+
     # calcolo il giorno per l'API in base all'orario: dalle 0:00 alle 5:59 la programmazione appartiene ancora al giorno precedente
     update_message_date = update.message.date if request_time >= START_TIME_PROGRAMS else update.message.date - timedelta(days=1)
 
@@ -191,7 +196,7 @@ def create_keyboard():
     })
     def switch_action(time, row_index):
         print ("time: " + str(time) + ", row_index: " + str(row_index))
-        keyboard[row_index].append(InlineKeyboardButton(str(time) + ":00", callback_data=time))
+        keyboard[row_index].append(InlineKeyboardButton(str(time) + ":00", callback_data="/ora " + str(time)))
     for x in range(24):
         row = switch[x]
         switch_action(x, row)
@@ -204,6 +209,16 @@ def orari(update, context):
 
     update.message.reply_text('Seleziona un orario:', reply_markup=reply_markup)
 updater.dispatcher.add_handler(CommandHandler('orari', orari))
+
+def button(update, context):
+    query = update.callback_query
+
+    # CallbackQueries need to be answered, even if no notification to the user is needed
+    # Some clients may have trouble otherwise. See https://core.telegram.org/bots/api#callbackquery
+    query.answer()
+
+    query.edit_message_text(text="Selected option: {}".format(query.data))
+updater.dispatcher.add_handler(CallbackQueryHandler(button))
 
 updater.start_polling()
 updater.idle()
