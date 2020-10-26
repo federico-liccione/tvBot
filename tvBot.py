@@ -210,15 +210,7 @@ def orari(update, context):
     update.message.reply_text('Seleziona un orario:', reply_markup=reply_markup)
 updater.dispatcher.add_handler(CommandHandler('orari', orari))
 
-def button(update, context):
-    query = update.callback_query
 
-    # CallbackQueries need to be answered, even if no notification to the user is needed
-    # Some clients may have trouble otherwise. See https://core.telegram.org/bots/api#callbackquery
-    query.answer()
-
-    query.edit_message_text(text="Selected option: {}".format(query.data))
-updater.dispatcher.add_handler(CallbackQueryHandler(button))
 
 updater.start_polling()
 updater.idle()
