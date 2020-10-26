@@ -98,8 +98,9 @@ def get_actual_program(response, request_time):
 def ora(update, context):
     print(str(update.message.chat.first_name) + " " + str(update.message.chat.last_name) + " " + "ha richiesto /ora")
     # recupero l'ora della richiesta nel formato hh:mm:ss
-    input_keyboard_time = context.args[0];
-    if input_keyboard_time :
+    if context.args :
+        input_keyboard_time = context.args[0];
+        print("input_keyboard_time: " + input_keyboard_time);
         request_time = input_keyboard_time + ":00:00";
     else :
         request_time = get_date_time(datetime.strftime(datetime.fromtimestamp(time.time()), "%Y-%m-%d %H:%M:%S"))[1]
