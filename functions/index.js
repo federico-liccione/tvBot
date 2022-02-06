@@ -6,13 +6,7 @@ require('dotenv').config();
 const app = express();
 
 const BEGINNING_TIME = moment('6:00', 'h:mm');
-
-const bot = new Telegraf(process.env.BOT_TOKEN)
-bot.start((ctx) => {
-    let message = ` Please use the menu to see the available options`;
-    ctx.reply(message);
-})
-
+//Don't touch: it serves for netlify deploy
 exports.handler = async event => {
     try {
       await bot.handleUpdate(JSON.parse(event.body));
@@ -22,7 +16,18 @@ exports.handler = async event => {
       return { statusCode: 400, body: 'This endpoint is meant for bot and telegram communication' };
     }
 }
+
+const bot = new Telegraf(process.env.BOT_TOKEN)
+bot.start((ctx) => {
+    let message = ` Please use the menu to see the available options`;
+    ctx.reply(message);
+})
   
+// Commands
+bot.command('hello', async (ctx) => {
+    ctx.reply(`Hello ${ctx.from.first_name}!`);
+});
+
 bot.command('ora', async (ctx) => {
     let htmlTemplate = await getCurrentSchedule();
     ctx.replyWithHTML(htmlTemplate);
@@ -45,7 +50,6 @@ const getCurrentSchedule = async () => {
 };
 
 const fetchData = (date) => {
-    console.log(process.env.NEW_API_URL);
     let options = {
         // uri: process.env.API_URL.replace('{DATE_MACRO}', date),
         uri: process.env.NEW_API_URL,
@@ -53,7 +57,6 @@ const fetchData = (date) => {
     };
     return requestPromise(options)
         .then(function(data) {
-            console.log(data.testo);
             return data.testo;
         })
         .catch(function(err) {
