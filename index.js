@@ -12,8 +12,8 @@ bot.start((ctx) => {
     let message = ` Please use the menu to see the available options`;
     ctx.reply(message);
 })
-bot.command('ora', (ctx) => {
-    let htmlTemplate = getCurrentSchedule();
+bot.command('ora', async (ctx) => {
+    let htmlTemplate = await getCurrentSchedule();
     ctx.replyWithHTML(htmlTemplate);
 });
 
@@ -42,7 +42,7 @@ const fetchData = (date) => {
     };
     return requestPromise(options)
         .then(function(data) {
-            return data;
+            return data.testo;
         })
         .catch(function(err) {
             console.log(err);
