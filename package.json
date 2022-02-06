@@ -4,7 +4,8 @@
   "description": "Telegram bot showing Tv schedule",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "forever start --uid tvBot --killSignal=SIGTERM -c 'nodemon --exitcrash' index.js",
+    "start:dev": "nodemon index.js",
     "test": "test:unit"
   },
   "repository": {
