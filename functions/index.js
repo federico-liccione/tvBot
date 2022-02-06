@@ -28,7 +28,7 @@ bot.command('hello', async (ctx) => {
     ctx.reply(`Hello ${ctx.from.first_name}!`);
 });
 
-bot.command('ora', async (ctx) => {
+bot.command('stasera', async (ctx) => {
     let htmlTemplate = await getCurrentSchedule();
     ctx.replyWithHTML(htmlTemplate);
 });
