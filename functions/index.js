@@ -9,7 +9,6 @@ const BEGINNING_TIME = moment('6:00', 'h:mm');
 //Don't touch: it serves for netlify deploy
 exports.handler = async event => {
     try {
-      await bot.handleUpdate(JSON.parse(event.body));
       return { statusCode: 200, body: '' };
     } catch (e) {
       console.log(e)
