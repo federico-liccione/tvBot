@@ -30,11 +30,11 @@ const getCurrentSchedule = async () => {
                 :
                 moment().format('YYYY-MM-DD');
     let jsonResponse = await fetchData(date);
-    console.log(jsonResponse.template);
-    return jsonResponse.template;
+    return jsonResponse;
 };
 
 const fetchData = (date) => {
+    console.log(process.env.NEW_API_URL);
     let options = {
         // uri: process.env.API_URL.replace('{DATE_MACRO}', date),
         uri: process.env.NEW_API_URL,
@@ -42,14 +42,11 @@ const fetchData = (date) => {
     };
     return requestPromise(options)
         .then(function(data) {
+            console.log(data.testo);
             return data.testo;
         })
         .catch(function(err) {
             console.log(err);
         });
-};
-
-const formatResponse = () => {
-
 };
 
